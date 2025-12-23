@@ -37,7 +37,7 @@ const CommentDialog = ({ open, setOpen }) => {
         },
         withCredentials: true
       });
-      if (res.data.success) {
+      if (res.data.success && res.data.comment) {
         const updatedCommentData = [...comment, res.data.comment];
         setComment(updatedCommentData);
         const updatedPostData = posts.map(p =>
@@ -83,9 +83,12 @@ const CommentDialog = ({ open, setOpen }) => {
             </div>
             <hr />
             <div className='flex-1 overflow-y-auto max-h-96 p-4'>
-              {
-                comment.map((comment) => <Comment key={comment._id} comment={comment} />)
-              }
+              {comment.map((comment) => {
+                if (!comment) return null;
+                return (
+                  <Comment key={comment._id || Math.random()} comment={comment} />
+                );
+              })}
             </div>
             <div className='p-4'>
               <div className='flex items-center gap-2'>
@@ -96,7 +99,7 @@ const CommentDialog = ({ open, setOpen }) => {
                   placeholder='Leave a comment ...'
                   className='w-full outline-none border text-sm border-gray-300 p-2 rounded '
                 />
-                <Button disabled={!text.trim()} onClick={sendMessageHandler} variant="outline">Send</Button>
+                <Button className='cursor-pointer hover:bg-cyan-500' disabled={!text.trim()} onClick={sendMessageHandler} variant="outline">Send</Button>
               </div>
             </div>
           </div>

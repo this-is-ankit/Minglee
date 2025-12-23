@@ -93,7 +93,7 @@ export const likePost = async (req, res) => {
         await post.save();
         return res.status(200).json({
             message: "Post liked",
-            sucess: true,
+            success: true,
         })
     } catch (error) {
         console.log(error);
@@ -112,7 +112,7 @@ export const dislikePost = async (req, res) => {
         await post.save();
         return res.status(200).json({
             message: "Post disliked",
-            sucess: true,
+            success: true,
         })
     } catch (error) {
         console.log(error);
@@ -142,6 +142,7 @@ export const addComment = async (req, res) => {
 
         return res.status(200).json({
             message: "Comment added",
+            comment,
             success: true,
         })
     } catch (error) {
