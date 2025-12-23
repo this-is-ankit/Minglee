@@ -43,13 +43,13 @@ export const getAllPost = async (req, res) => {
     try {
         const posts = await Post.find()
             .sort({ createdAt: -1 })
-            .populate({ path: 'author', select: 'username , profilePicture' })
+            .populate({ path: 'author', select: 'username  profilePicture' })
             .populate({
                 path: 'comments',
                 sort: { createdAt: -1 },
                 populate: {
                     path: 'author',
-                    select: 'username , profilePicture'
+                    select: 'username  profilePicture'
                 }
             });
         return res.status(200).json({ posts, success: true });
@@ -132,9 +132,10 @@ export const addComment = async (req, res) => {
             text,
             author: commenting_user,
             post: postId,
-        }).populate({
+        })
+        await comment.populate({
             path: 'author',
-            select: 'username , profilePicture'
+            select: 'username profilePicture'
         })
         post.comments.push(comment._id);
         await post.save();
@@ -150,7 +151,7 @@ export const addComment = async (req, res) => {
 export const getCommentOfPost = async (req, res) => {
     try {
         const postId = req.params.id;
-        const comments = await Comment.find({ post: postId }).populate('author', 'username , profilePicture');
+        const comments = await Comment.find({ post: postId }).populate('author', 'username  profilePicture');
         if (!comments) res.status(200).json({
             message: "No comments found for this post",
             success: false,
@@ -217,7 +218,7 @@ export const bookMarkPost = async (req, res) => {
 
         }
         else {
-            await user.updateOne({ $addToSet : { bookmarks: post._id } })
+            await user.updateOne({ $addToSet: { bookmarks: post._id } })
             await user.save();
             return res.status(200).json({
                 type: 'saved',

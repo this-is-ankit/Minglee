@@ -28,9 +28,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/api/v1/user"  , userRoute);
-app.use("/api/v1/user"  , postRoute);
-app.use("/api/v1/user"  , messageRoute);
-app.listen(PORT , () => {
+app.use("/api/v1/post"  , postRoute);
+app.use("/api/v1/message"  , messageRoute);
+app.listen(PORT , () => {   
     connectDB();
     console.log(`Server started at PORT ${PORT}`);
 });
